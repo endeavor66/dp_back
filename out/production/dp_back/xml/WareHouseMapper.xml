@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.supplychain.mapper.WareHouseMapper">
+
+    <select id="selectAllProductTypeId" resultMap="String">
+        select id from productlist_c group by id
+    </select>
+
+    <select id="selectProductTypeByProductTypeId" resultMap="ProductType">
+        select id,name,price from productlist_c
+        where id=#{productTypeId}
+    </select>
+
+    <select id="selectNameById" resultMap="String">
+        select name from productlist_c
+        where id=#{id}
+    </select>
+
+    <select id="selectMaterialIdByProductId" resultMap="String">
+        select material_id from product_material_relation_c
+        where product_id=#{productId}
+    </select>
+
+    <select id="selectMaterialNameByMaterialId" resultMap="String">
+        select name from materiallist_c
+        where id=#{id}
+    </select>
+
+    <select id="selectAllProductId" resultMap="String">
+        select id,product_id ,quantity,in_date from warehouse_product_c group by id
+    </select>
+
+    <select id="selectProductIdById" resultMap="Product">
+        select id,product_id ,quantity,in_date from warehouse_product_c
+        where id = #{id}
+    </select>
+
+    <select id="selectProductNameByProductId" resultMap="ProductType">
+        select id,name,price from productlist_c
+        where id = #{id}
+    </select>
+
+    <select id="selectWareHouseByProductId" resultMap="Product">
+        select id,product_id ,quantity,in_date from warehouse_product_c
+        where product_id = #{productId}
+    </select>
+
+    <insert id="insertProductWareHouseType" parameterType="com.example.supplychain.po.ProductType">
+        insert into productlist_c values (#{id},#{productName},#{price})
+    </insert>
+
+    <insert id="insertProductRawMaterial" parameterType="com.example.supplychain.po.ProductRawMaterial">
+        insert into product_material_relation_c values (#{productTypeId},#{rawMateerialTypeId})
+    </insert>
+
+    <insert id="insertWarehouse" parameterType="com.example.supplychain.po.Product">
+        insert into warehouse_product_c values (#{id},#{productId},#{num},#{madeTime})
+    </insert>
+
+    <delete id="deleteWareHouseTypeList" parameterType="com.example.supplychain.po.ProductType">
+        delete from productlist_c where id=#{id}
+    </delete>
+
+    <delete id="deleteWareHouseList" parameterType="com.example.supplychain.po.Product">
+        delete from warehouse_product_c where id=#{id}
+    </delete>
+
+    <update id="updateProductWareHouseTypeList" parameterType="com.example.supplychain.po.ProductType">
+        update productlist_c set name=#{productName} where id=#{id}
+    </update>
+
+    <update id="updateQuantityById" parameterType="com.example.supplychain.po.Product">
+        update warehouse_product_c set quantity =#{quantity} where id=#{id}
+    </update>
+
+    <resultMap id="String" type="java.lang.String"></resultMap>
+    <resultMap id="Date" type="java.util.Date"></resultMap>
+
+    <resultMap id="Product" type="com.example.supplychain.po.Product">
+        <result column="id" property="id"></result>
+        <result column="product_id" property="productId"></result>
+        <result column="quantity" property="num"></result>
+        <result column="in_date" property="madeTime"></result>
+
+    </resultMap>
+
+    <resultMap id="ProductType" type="com.example.supplychain.po.ProductType">
+        <result column="id" property="id"></result>
+        <result column="name" property="productName"></result>
+        <result column="price" property="price"></result>
+    </resultMap>
+</mapper>
