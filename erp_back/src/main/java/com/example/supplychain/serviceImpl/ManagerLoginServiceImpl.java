@@ -35,7 +35,8 @@ public class ManagerLoginServiceImpl implements ManagerLoginService {
     @Override
     public ResponseVO submitManagerLoginInfo(String userName ,String passWord){
         try {
-                ClientManagerVO result = managerLoginMapper.selectManagerInfoById(userName);
+            System.out.println("用户名："+userName+",密码："+passWord);
+            ClientManagerVO result = managerLoginMapper.selectManagerInfoById(userName);
 
             if(result.getCode().equals(passWord))
                 return ResponseVO.buildSuccess(result);
