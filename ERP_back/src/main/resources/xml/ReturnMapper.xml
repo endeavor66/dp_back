@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.supplychain.mapper.ReturnMapper">
+
+    <!--    ReturnMapper        -->
+    <select id="selectReturn" resultMap="ReturnVO">
+        select sales_id,productlist_c.name,return_application_c.product_id,num,sales_c.price,sales_c.sales_sum,return_date,reason from return_application_c,productlist_c,sales_c
+        where return_application_c.product_id = productlist_c.id AND sales_c.id = sales_id
+    </select>
+
+    <insert id="insertReturnInfo" parameterType="com.example.supplychain.po.Return">
+        insert into return_application_c select #{id},#{salesId},#{date},sales_c.product_id,#{reason},sales_c.num
+        from sales_c
+        where sales_c.id = #{salesId}
+    </insert>
+
+    <update id="updateSalesReturnSate" parameterType="String">
+        update sales_c set return_state=false where id=#{SalesId}
+    </update>
+
+    <select id="getNewestReturnId" resultMap="String">
+        select id from return_application_c order by id desc limit 1;
+    </select>
+
+
+
+    <resultMap id="String" type="java.lang.String"></resultMap>
+    <resultMap id="ReturnVO" type="com.example.supplychain.vo.ReturnVO">
+        <result column="sales_id" property="salesId"></result>
+        <result column="name" property="productName"></result>
+        <result column="product_id" property="productId"></result>
+        <result column="num" property="num"></result>
+        <result column="price" property="price"></result>
+        <result column="sales_sum" property="totalPrice"></result>
+        <result column="return_date" property="date"></result>
+        <result column="reason" property="reason"></result>
+
+    </resultMap>
+
+    <resultMap id="Return" type="com.example.supplychain.po.Return">
+        <result column="id" property="id"></result>
+        <result column="salesId" property="salesId"></result>
+        <result column="sales_date" property="date"></result>
+        <result column="reason" property="reason"></result>
+
+    </resultMap>
+
+
+
+
+</mapper>

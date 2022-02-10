@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.supplychain.mapper.SalesPresentMapper">
+
+    <!--    SalesPresentMapper        -->
+    <select id="selectTotalSale" resultMap="Double">
+        select SUM(num*price) from sales_c
+    </select>
+
+    <select id="selectOrderCount" resultMap="int">
+        select COUNT(*) from sales_c
+    </select>
+
+    <select id="selectCommodityCount" resultMap="int">
+        select COUNT(*) from productlist_c
+    </select>
+
+    <select id="selectSalesOrderByYear" resultMap="SalesTrendGeneral">
+        select EXTRACT(YEAR from sales_date) as SalesTime , SUM(num*price) as SalesAmout from sales_c
+        GROUP BY SalesTime
+        ORDER BY SalesTime
+    </select>
+
+    <select id="selectSalesOrderByMonth" resultMap="SalesTrendGeneral">
+        select DATE_FORMAT(sales_date,'%m-%d')  as SalesTime,SUM(num*price)as SalesAmout from sales_c
+        GROUP BY SalesTime
+        ORDER BY SalesTime ASC
+        LIMIT 0,12;
+    </select>
+
+    <select id="selectSalesOrderByDay" resultMap="SalesTrendGeneral">
+        select sales_date , SUM(num*price) as SalesAmout from sales_c
+        GROUP BY sales_date
+        ORDER BY sales_date ASC
+        limit 15;
+    </select>
+
+    <select id="selectSalesRateYear" resultMap="SalesRateTime">
+        select sales_date, sales_sum, product_id  from sales_c
+        where EXTRACT(YEAR from sales_date)=#{year}
+        GROUP BY product_id
+    </select>
+
+    <select id="selectSalesRateMonth" resultMap="SalesRateTime">
+        select  EXTRACT(MONTH from sales_date) as times, sales_sum, product_id as id from sales_c
+        where (EXTRACT(YEAR from sales_date) = #{year} AND EXTRACT(MONTH from sales_date) = #{month})
+        GROUP BY product_id
+    </select>
+
+    <select id="selectProductNameById" resultMap="String">
+        select  name from productlist_c
+        where id = #{product_id}
+    </select>
+
+    <select id="selectSalesByProductId" resultMap="SalesByProductId">
+        select EXTRACT(YEAR from sales_date)as salesTimes, SUM(num*price) as salesAmount from sales_c
+        where product_id = #{product_id}
+        GROUP BY salesTimes
+    </select>
+
+    <!--    需要进行表的关联        -->
+    <select id="selectSalesListByMonth" resultMap="SalesList">
+        select sales_c.id, product_id,name,num, sales_c.price, sales_date from sales_c , productlist_c
+        where EXTRACT(YEAR from sales_date) = #{year} AND EXTRACT(MONTH from sales_date) = #{month} AND product_id = productlist_c.id
+    </select>
+
+    <select id="selectSalesRateRecent" resultMap="SalesRateTime">
+        select sales_date, sales_sum , product_id from sales_c
+        where sales_date>=DATE_SUB(CURDATE(),INTERVAL #{days} DAY)
+        GROUP by product_id
+    </select>
+
+    <select id="selectTotalSaleRecent" resultMap="Double">
+        select SUM(num*price)  from sales_c
+        where sales_date>=DATE_SUB(CURDATE(),INTERVAL #{days} DAY)
+    </select>
+
+    <select id="selectOrderCountRecent" resultMap="int">
+        select COUNT(*) from sales_c
+        where sales_date>=DATE_SUB(CURDATE(),INTERVAL #{days} DAY)
+    </select>
+
+    <select id="selectSalesRecent" resultMap="SalesList">
+        select sales_c.id, product_id,name,num, sales_c.price, sales_date from sales_c , productlist_c
+        where sales_date>=DATE_SUB(CURDATE(),INTERVAL #{days} DAY) AND product_id = productlist_c.id
+    </select>
+
+    <select id="selectSalesPredictRecent" resultMap="SalesPredictVO">
+        select predict_date, actual_sales_amount,predict_sales_amount from predict_c
+        where predict_date>=DATE_SUB(CURDATE(),INTERVAL #{days} DAY)
+    </select>
+
+
+
+
+
+    <resultMap id="Double" type="java.lang.Double"></resultMap>
+    <resultMap id="String" type="java.lang.String"></resultMap>
+    <resultMap id="int" type="java.lang.Integer"></resultMap>
+
+    <resultMap id="SalesTrendGeneral" type="com.example.supplychain.po.SalesTrendGeneral">
+        <result column="SalesTime" property="time"></result>
+        <result column="SalesAmout" property="salesAmount"></result>
+    </resultMap>
+
+    <resultMap id="SalesRateTime" type="com.example.supplychain.po.SalesRateTime">
+        <result column="times" property="time"></result>
+        <result column="sales_sum" property="salesAmount"></result>
+        <result column="id" property="product_id"></result>
+    </resultMap>
+
+    <resultMap id="SalesList" type="com.example.supplychain.po.SalesList">
+        <result column="id" property="id"></result>
+        <result column="name" property="product_name"></result>
+        <result column="sales_date" property="sales_date"></result>
+        <result column="salesAmout" property="price"></result>
+        <result column="product_id" property="product_id"></result>
+        <result column="num" property="num"></result>
+    </resultMap>
+
+    <resultMap id="SalesByProductId" type="com.example.supplychain.po.SalesByProductId">
+        <result column="salesTimes" property="year"></result>
+        <result column="salesAmout" property="salesAmount"></result>
+    </resultMap>
+
+    <resultMap id="SalesPredictVO" type="com.example.supplychain.vo.SalesPredictVO">
+        <result column="predict_date" property="times"></result>
+        <result column="actual_sales_amount" property="actual"></result>
+        <result column="predict_sales_amount" property="predict"></result>
+
+    </resultMap>
+
+</mapper>
