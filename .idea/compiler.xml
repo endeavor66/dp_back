@@ -7,12 +7,14 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="ERP_back" />
+        <module name="springboot" />
         <module name="DataMiddle_back" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="DataMiddle_back" target="1.8" />
       <module name="ERP_back" target="1.8" />
+      <module name="springboot" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

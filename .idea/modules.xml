@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/DataMiddle_back/DataMiddle_back.iml" filepath="$PROJECT_DIR$/DataMiddle_back/DataMiddle_back.iml" />
       <module fileurl="file://$PROJECT_DIR$/ERP_back/ERP_back.iml" filepath="$PROJECT_DIR$/ERP_back/ERP_back.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/dp_back.iml" filepath="$PROJECT_DIR$/.idea/dp_back.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ERP_back/springboot.iml" filepath="$PROJECT_DIR$/ERP_back/springboot.iml" />
     </modules>
   </component>
 </project>
