@@ -11,7 +11,7 @@
     <groupId>com.example</groupId>
     <artifactId>erp_back</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>springboot</name>
+    <name>erp_back</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>
