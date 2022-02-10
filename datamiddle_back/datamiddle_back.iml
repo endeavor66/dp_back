@@ -17,10 +17,10 @@
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">
     <output url="file://$MODULE_DIR$/../DataMiddle_back/target/classes" />
     <output-test url="file://$MODULE_DIR$/../DataMiddle_back/target/test-classes" />
-    <content url="file://$MODULE_DIR$/../DataMiddle_back">
-      <sourceFolder url="file://$MODULE_DIR$/../DataMiddle_back/src/main/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/../DataMiddle_back/src/main/resources" type="java-resource" />
-      <sourceFolder url="file://$MODULE_DIR$/../DataMiddle_back/src/test/java" isTestSource="true" />
+    <content url="">
+      <sourceFolder url="file://$MODULE_DIR$/../datamiddle_back/src/main/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/../datamiddle_back/src/main/resources" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/../datamiddle_back/src/test/java" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/../DataMiddle_back/target" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
     </content>
