@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.supplychain.mapper.ManagerLoginMapper">
+
+    <!--    ManagerLoginMapper-->
+    <select id="selectManagerInfoById" resultMap="ClientManagerVO">
+        select id,name,code,power from manager_c
+        where id=#{managerId}
+    </select>
+
+    <select id="selectSalesDatesDone" resultMap="Date">
+        select sales_date from sales_date
+    </select>
+
+    <select id="selectReturnDatesDone" resultMap="Date">
+        select return_date from return_date
+    </select>
+
+    <select id="selectSalesDates" resultMap="Date">
+        select sales_date from sales_c
+        group by sales_date
+    </select>
+
+    <select id="selectReturnDates" resultMap="Date">
+        select return_date from return_application_c
+        group by return_date
+    </select>
+
+    <select id="getSalesC" resultMap="SalesC">
+        select id,product_id,sales_date,num,product_id from sales_c
+        where (EXTRACT(YEAR from sales_date) = #{arg0}) and (EXTRACT(MONTH from sales_date) = #{arg1}) and (EXTRACT(DAY from sales_date) = #{arg2})
+    </select>
+
+    <select id="getReturnC" resultMap="ReturnC">
+        select id,sales_id,return_date,product_id,reason,return_date from return_application_c
+        where (EXTRACT(YEAR from return_date) = #{arg0}) and (EXTRACT(MONTH from return_date) = #{arg1}) and (EXTRACT(DAY from return_date) = #{arg2})
+    </select>
+
+    <insert id="insertSalesDate" parameterType="Date">
+        insert into sales_date values (#{date})
+    </insert>
+
+    <insert id="insertReturnDate" parameterType="Date">
+        insert into return_date values (#{date})
+    </insert>
+
+    <resultMap id="Date" type="java.util.Date"></resultMap>
+
+    <resultMap id="ClientManagerVO" type="com.example.supplychain.vo.ClientManagerVO">
+        <result column="id" property="id"></result>
+        <result column="name" property="name"></result>
+        <result column="code" property="code"></result>
+        <result column="power" property="power"></result>
+    </resultMap>
+
+    <resultMap id="SalesC" type="com.example.supplychain.po.SalesC">
+        <result column="id" property="id"></result>
+        <result column="product_id" property="product_id"></result>
+        <result column="sales_date" property="sales_date"></result>
+        <result column="num" property="num"></result>
+        <result column="price" property="price"></result>
+    </resultMap>
+
+    <resultMap id="ReturnC" type="com.example.supplychain.po.ReturnC">
+        <result column="id" property="id"></result>
+        <result column="sales_id" property="sales_id"></result>
+        <result column="return_date" property="return_date"></result>
+        <result column="product_id" property="product_id"></result>
+        <result column="reason" property="reason"></result>
+        <result column="return_state" property="return_state"></result>
+    </resultMap>
+
+</mapper>
+
+
+
+

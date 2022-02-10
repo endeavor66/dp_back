@@ -5,7 +5,6 @@
       <module fileurl="file://$PROJECT_DIR$/erp_back/ERP_back.iml" filepath="$PROJECT_DIR$/erp_back/ERP_back.iml" />
       <module fileurl="file://$PROJECT_DIR$/datamiddle_back/datamiddle_back.iml" filepath="$PROJECT_DIR$/datamiddle_back/datamiddle_back.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/dp_back.iml" filepath="$PROJECT_DIR$/.idea/dp_back.iml" />
-      <module fileurl="file://$PROJECT_DIR$/erp_back/erp_back.iml" filepath="$PROJECT_DIR$/erp_back/erp_back.iml" />
     </modules>
   </component>
 </project>

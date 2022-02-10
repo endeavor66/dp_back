@@ -6,9 +6,8 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="ERP_back" />
-        <module name="erp_back" />
         <module name="datamiddle_back" />
+        <module name="ERP_back" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>

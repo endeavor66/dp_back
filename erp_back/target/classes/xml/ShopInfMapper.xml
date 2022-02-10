@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.supplychain.mapper.ShopInfMapper">
+    <select id="selectAllShopId" resultMap="String">
+        select id from shop_c group by id
+    </select>
+
+    <select id="selectShopByShopId" resultMap="Shop">
+        select id,shop_name,shop_location,shop_type,shop_synopsis,DATE(found_date),shop_director,shop_capital from shop_c
+        where id=#{shopId}
+    </select>
+
+    <resultMap id="String" type="java.lang.String"></resultMap>
+
+    <resultMap id="Shop" type="com.example.supplychain.po.Shop">
+        <result column="id" property="id"></result>
+        <result column="shop_name" property="name"></result>
+        <result column="shop_location" property="location"></result>
+        <result column="shop_type" property="type"></result>
+        <result column="shop_synopsis" property="synopsis"></result>
+        <result column="found_date" property="found"></result>
+        <result column="shop_director" property="director"></result>
+        <result column="shop_capital" property="capital"></result>
+    </resultMap>
+</mapper>

@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.supplychain.mapper.ProcurementMapper">
+
+    <select id="selectAllRawMaterialId" resultMap="String">
+        select id from materiallist_c group by id
+    </select>
+
+    <select id="selectSupplierIdByRawMaterialId" resultMap="String">
+        select supplier_id from supplier_material_relation_c
+        where material_id=#{materialId}
+    </select>
+
+    <select id="selectSupplierBySupplierId" resultMap="RawMaterialSupplier">
+        select id,name,location,star,time_parameter,fare_parameter from supplier_c
+        where id=#{supplierId}
+    </select>
+
+
+    <select id="getNewestPurchaseAppId" resultMap="String">
+        select id from purchase_application_c order by id desc limit 1;
+    </select>
+
+    <insert id="insertPurchaseApplication" parameterType="com.example.supplychain.po.PurchaseApplicationC">
+        insert into purchase_application_c values (#{id},#{subDate},#{managerName},#{state});
+    </insert>
+
+    <insert id="insertPurchaseList" parameterType="com.example.supplychain.po.PurchaseListC">
+        insert into purchase_list_c values (#{id},#{materialId},#{num},#{price},#{supplierId},#{purchaseListState},#{inDate})
+    </insert>
+
+    <select id="getPriceBySupplierAndMaterialId" resultMap="Double">
+        select price from supplier_material_relation_c
+        where (material_id=#{mId} and supplier_id=#{sId})
+    </select>
+
+    <delete id="deletePurchaseAcceptance" parameterType="String">
+        delete from purchase_acceptance_c where purchase_application_id=#{id}
+    </delete>
+
+    <delete id="deletePurchaseApplication" parameterType="String">
+        delete from purchase_application_c where id=#{id}
+    </delete>
+
+    <delete id="deletePurchaseList" parameterType="String">
+        delete from purchase_list_c where purchase_application_id=#{id}
+    </delete>
+
+
+    <select id="getNewestPurchaseAccId" resultMap="String">
+        select  id from purchase_acceptance_c order by id desc limit 1;
+    </select>
+
+    <select id="getPowerByManagerId" resultMap="int">
+        select power from manager_c where id=#{managerId}
+    </select>
+
+    <select id="getManagerNameById" resultMap="String">
+        select name from manager_c where id=#{id}
+    </select>
+
+    <insert id="insertPurchaseAcceptance" parameterType="com.example.supplychain.po.PurchaseAcceptanceC">
+        insert into purchase_acceptance_c values (#{id},#{pId},#{auditClass},#{result},#{managerName},#{date},#{note})
+    </insert>
+
+    <update id="updatePurchaseApplication" parameterType="String">
+        update purchase_application_c set state=#{state} where id=#{id}
+    </update>
+
+    <update id="updatePurchaseList" parameterType="String">
+        update purchase_list_c set state=#{state} where (purchase_application_id=#{pId} and material_id=#{id})
+    </update>
+
+
+    <select id="getNumByPurchaseIdAndMaterialId" resultMap="Double">
+        select num from purchase_list_c where (purchase_application_id=#{pId} and material_id=#{mId})
+    </select>
+
+    <select id="getNewestWarehouseMaterialId" resultMap="String">
+        select id from warehouse_material_c order by id desc limit 1;
+    </select>
+
+    <select id="getMaterialNameByMaterialId" resultMap="String">
+        select name from materiallist_c where id=#{id};
+    </select>
+
+    <update id="updatePurchaseListDate" parameterType="com.example.supplychain.po.PurchaseListDateUpdate">
+        update purchase_list_c set in_date=#{date} where (purchase_application_id=#{purchaseApplicationId} and material_id=#{materialId})
+    </update>
+
+    <insert id="insertMaterialWarehouse" parameterType="com.example.supplychain.po.WarehouseMaterialC">
+        insert into warehouse_material_c values (#{id},#{materialName},#{quantity},#{inDate})
+    </insert>
+
+
+    <select id="getPurchasingApplication" resultMap="PurchaseApplicationC">
+        select id,sub_date,manager_name,state from purchase_application_c
+        where state='1' or state='2' or state='3' or state='4' or state='5'
+    </select>
+
+    <select id="getPurchasingList" resultMap="PurchaseListC">
+        select purchase_application_id,material_id,num,price,supplier_id,state,in_date from purchase_list_c
+        where purchase_application_id=#{id}
+    </select>
+
+
+    <select id="getPurchasedApplication" resultMap="PurchaseApplicationC">
+        select id,sub_date,manager_name,state from purchase_application_c
+        where state='6' and (EXTRACT(YEAR from sub_date) = #{year}) and (EXTRACT(MONTH from sub_date) = #{month})
+    </select>
+
+    <select id="getPurchasedList" resultMap="PurchaseListC">
+        select purchase_application_id,material_id,num,price,supplier_id,state,in_date from purchase_list_c
+        where purchase_application_id=#{id}
+    </select>
+
+    <select id="getPurchaseAcceptance" resultMap="PurchaseAcceptanceC">
+        select id,purchase_application_id,class,review_result,manager_name,review_date,note from purchase_acceptance_c
+        where purchase_application_id=#{id}
+    </select>
+
+
+   <select id="getMaterialInfo" resultMap="RawMaterialName">
+        select id,name from materiallist_c
+        where id=#{id}
+    </select>
+
+
+    <update id="updatePurchaseAppState" parameterType="String">
+        update purchase_application_c set state=#{state} where id=#{id}
+    </update>
+
+
+    <select id="getPurchaseAppState" resultMap="String">
+        select state from purchase_application_c where id=#{id}
+    </select>
+
+    <select id="getManagerPowerById" resultMap="int">
+        select power from manager_c where id=#{id}
+    </select>
+
+    <select id="getManagerPowerByName" resultMap="int">
+        select power from manager_c where name=#{name}
+    </select>
+
+    <select id="getNewestPurchaseAcceptanceC" resultMap="PurchaseAcceptanceC">
+        select id,purchase_application_id,class,review_result,manager_name,review_date,note from purchase_acceptance_c
+        where purchase_application_id=#{purchaseId}
+        order by id desc limit 1;
+    </select>
+
+
+    <update id="updateNewPurchaseApplication" parameterType="com.example.supplychain.po.PurchaseApplicationUpdate">
+        update purchase_application_c set sub_date=#{subDate}, manager_name=#{managerName} where id=#{id}
+    </update>
+
+    <update id="updateNewPurchaseList" parameterType="com.example.supplychain.po.PurchaseListUpdate">
+        update purchase_list_c set num=#{num}, price=#{price}, supplier_id=#{sId}
+        where purchase_application_id=#{pId} and material_id=#{mId}
+    </update>
+
+    <resultMap id="String" type="java.lang.String"></resultMap>
+    <resultMap id="int" type="java.lang.Integer"></resultMap>
+    <resultMap id="Double" type="java.lang.Double"></resultMap>
+    <resultMap id="Date" type="java.util.Date"></resultMap>
+
+
+    <resultMap id="RawMaterialSupplier" type="com.example.supplychain.po.RawMaterialSupplier">
+        <result column="id" property="id"></result>
+        <result column="name" property="name"></result>
+        <result column="location" property="location"></result>
+        <result column="star" property="star"></result>
+        <result column="time_parameter" property="time_parameter"></result>
+        <result column="fare_parameter" property="fare_parameter"></result>
+    </resultMap>
+
+    <resultMap id="RawMaterialName" type="com.example.supplychain.po.RawMaterialName">
+        <result column="id" property="id"></result>
+        <result column="name" property="name"></result>
+    </resultMap>
+
+    <resultMap id="PurchaseApplicationC" type="com.example.supplychain.po.PurchaseApplicationC">
+        <result column="id" property="id"></result>
+        <result column="sub_date" property="subDate"></result>
+        <result column="manager_name" property="managerName"></result>
+        <result column="state" property="state"></result>
+    </resultMap>
+
+    <resultMap id="PurchaseListC" type="com.example.supplychain.po.PurchaseListC">
+        <result column="purchase_application_id" property="id"></result>
+        <result column="material_id" property="materialId"></result>
+        <result column="num" property="num"></result>
+        <result column="price" property="price"></result>
+        <result column="supplier_id" property="supplierId"></result>
+        <result column="state" property="purchaseListState"></result>
+        <result column="in_date" property="inDate"></result>
+    </resultMap>
+
+    <resultMap id="PurchaseAcceptanceC" type="com.example.supplychain.po.PurchaseAcceptanceC">
+        <result column="id" property="id"></result>
+        <result column="purchase_application_id" property="pId"></result>
+        <result column="class" property="auditClass"></result>
+        <result column="review_result" property="result"></result>
+        <result column="manager_name" property="managerName"></result>
+        <result column="review_date" property="date"></result>
+        <result column="note" property="note"></result>
+    </resultMap>
+
+</mapper>

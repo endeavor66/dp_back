@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org/DTD Mapper 3.0" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.supplychain.mapper.RawMaterialWareHouseMapper">
+
+    <select id="selectAllRawMateerialTypeId" resultMap="String">
+        select id from materiallist_c group by id
+    </select>
+
+    <select id="selectRawMaterialTypeByRawMaterialTypeId" resultMap="RawMaterialType">
+        select id,name from materiallist_c
+        where id=#{rawMaterialTypeId}
+    </select>
+
+    <select id="selectRawMaterialTypeIdByProductTypeId" resultMap="ProductRawMaterial">
+        select product_id,material_id from product_material_relation_c where product_id=#{productId}
+    </select>
+
+    <select id="selectRawMaterialNameByRawMaterialTypeId" resultMap="RawMaterialType">
+        select name,id from materiallist_c
+        where id=#{rawMaterialTypeId}
+    </select>
+
+    <select id="selectMaterialNameById" resultMap="String">
+        select material_name from warehouse_material_c
+        where id=#{id}
+    </select>
+
+    <select id="selectNumByRawMaterialName" resultMap="RawMaterial">
+        select materiallist_c.id,quantity from warehouse_material_c,materiallist_c
+        where material_name=#{rawMaterialName}
+        order by in_date asc
+    </select>
+
+    <delete id="deleteRawMaterialType" parameterType="com.example.supplychain.po.RawMaterialType">
+        delete from materiallist_c where id=#{rawMaterialTypeId}
+    </delete>
+
+    <insert id="insertRawMaterialType" parameterType="com.example.supplychain.po.RawMaterialType">
+        insert into materiallist_c values (#{id},#{rawMaterialName})
+    </insert>
+
+    <update id="updateRawMaterialType" parameterType="com.example.supplychain.po.RawMaterialType">
+        update materiallist_c set name=#{rawMaterialName} where id=#{id}
+    </update>
+
+    <delete id="deleteRawMaterial" parameterType="com.example.supplychain.po.RawMaterial">
+        delete from warehouse_material_c where material_name=#{rawMaterialName}
+    </delete>
+
+    <insert id="insertRawMaterial" parameterType="com.example.supplychain.po.RawMaterial">
+        insert into warehouse_material_c values (#{id},#{name},#{nums},#{date})
+    </insert>
+
+    <update id="updateRawMaterial" parameterType="com.example.supplychain.po.RawMaterial">
+        update warehouse_material_c set quantity=#{quantity} where id=#{id}
+    </update>
+
+    <select id="selectAllId" resultMap="String">
+        select id from warehouse_material_c group by id
+    </select>
+
+
+    <select id="selectRawMaterialById" resultMap="RawMaterial">
+        select id,material_name,quantity,in_date from warehouse_material_c
+        where id=#{id}
+    </select>
+
+    <update id="updateRawMaterialNumByRawMaterialName" parameterType="com.example.supplychain.po.RawMaterial">
+        update warehouse_material_c set quantity=#{quantity} where material_name=#{name}
+    </update>
+
+    <delete id="deleteRawMaterialById" parameterType="com.example.supplychain.po.RawMaterial">
+        delete from warehouse_material_c where id=#{id}
+    </delete>
+
+    <select id="selectDateByRawMaterialId" resultMap="Date">
+        select in_date from purchase_list_c
+        where material_id =#{materialId}
+    </select>
+
+
+
+    <resultMap id="String" type="java.lang.String"></resultMap>
+    <resultMap id="int" type="java.lang.Integer"></resultMap>
+    <resultMap id="Date" type="java.util.Date"></resultMap>
+
+    <resultMap id="RawMaterialType" type="com.example.supplychain.po.RawMaterialType">
+        <result column="id" property="id"></result>
+        <result column="name" property="rawMaterialName"></result>
+    </resultMap>
+
+    <resultMap id="RawMaterial" type="com.example.supplychain.po.RawMaterial">
+        <result column="id" property="id"></result>
+        <result column="material_name" property="name"></result>
+        <result column="quantity" property="nums"></result>
+        <result column="in_date" property="date"></result>
+    </resultMap>
+
+    <resultMap id="ProductRawMaterial" type="com.example.supplychain.po.ProductRawMaterial">
+        <result column="product_id" property="productTypeId"></result>
+        <result column="material_id" property="rawMateerialTypeId"></result>
+    </resultMap>
+
+    <resultMap id="PurchaseListC" type="com.example.supplychain.po.PurchaseListC">
+        <result column="purchase_application_id" property="id"></result>
+        <result column="material_id" property="materialId"></result>
+        <result column="num" property="num"></result>
+        <result column="price" property="price"></result>
+        <result column="supplier_id" property="supplierId"></result>
+        <result column="state" property="purchaseListState"></result>
+        <result column="in_date" property="inDate"></result>
+    </resultMap>
+</mapper>
